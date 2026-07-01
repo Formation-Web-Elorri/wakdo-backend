@@ -1,0 +1,47 @@
+[
+    {
+        "id":1,
+        "title": "menus",
+        "image": "/public/assets/categories/menus.png"
+    },
+    {
+        "id":2,
+        "title": "boissons",
+        "image": "/public/assets/categories/boissons.png"
+    },
+    {
+        "id":3,
+        "title": "burgers",
+        "image": "/public/assets/categories/burgers.png"
+    },
+    {
+        "id":4,
+        "title": "frites",
+        "image": "/public/assets/categories/frites.png"
+    },
+    {
+        "id":5,
+        "title": "encas",
+        "image": "/public/assets/categories/encas.png"
+    },
+    {
+        "id":6,
+        "title": "wraps",
+        "image": "/public/assets/categories/wraps.png"
+    },
+    {
+        "id":7,
+        "title": "salades",
+        "image": "/public/assets/categories/salades.png"
+    },
+    {
+        "id":8,
+        "title": "desserts",
+        "image": "/public/assets/categories/desserts.png"
+    },
+    {
+        "id":9,
+        "title": "sauces",
+        "image": "/public/assets/categories/sauces.png"
+    }
+]
