@@ -19,4 +19,10 @@ export default class ProduitsController {
     const produits = await query
     return response.ok(produits)
   }
+
+  async adminIndex({ view }: HttpContext) {
+    const produits = await Produit.query().preload('categorie').orderBy('nom')
+
+    return view.render('admin/produits/index', { produits })
+  }
 }
