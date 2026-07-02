@@ -25,4 +25,21 @@ export default class ProduitsController {
 
     return view.render('admin/produits/index', { produits })
   }
+
+  async create({ view }: HttpContext) {
+    const categories = await Categorie.query().orderBy('nom')
+
+    return view.render('admin/produits/create', { categories })
+  }
+
+  async store({ request, response }: HttpContext) {
+    const nom = request.input('nom')
+    const prix = request.input('prix')
+    const categorieId = request.input('categorieId')
+    const disponible = request.input('disponible') === 'on'
+
+    await Produit.create({ nom, prix, categorieId, disponible })
+
+    return response.redirect('/admin/produits')
+  }
 }

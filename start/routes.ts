@@ -23,6 +23,14 @@ router
     router
       .get('/produits', [ProduitsController, 'adminIndex'])
       .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .get('/produits/nouveau', [ProduitsController, 'create'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .post('/produits', [ProduitsController, 'store'])
+      .use(middleware.role({ roles: ['administration'] }))
   })
   .prefix('/admin')
   .use(middleware.auth())
