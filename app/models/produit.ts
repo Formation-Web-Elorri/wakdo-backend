@@ -23,7 +23,7 @@ export default class Produit extends BaseModel {
   declare disponible: boolean
 
   @column({ columnName: 'category_id' })
-  declare categoryId: number
+  declare categorieId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

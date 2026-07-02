@@ -6,6 +6,8 @@ import Produit from '#models/produit'
 import LigneCommandeOption from '#models/ligne_commande_option'
 
 export default class LigneCommande extends BaseModel {
+  static table = 'lignes_commande'
+
   @column({ isPrimary: true })
   declare id: number
 

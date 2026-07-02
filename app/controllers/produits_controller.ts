@@ -13,7 +13,7 @@ export default class ProduitsController {
       if (!categorie) {
         return response.ok([])
       }
-      query.where('categoryId', categorie.id)
+      query.where('categorieId', categorie.id)
     }
 
     const produits = await query

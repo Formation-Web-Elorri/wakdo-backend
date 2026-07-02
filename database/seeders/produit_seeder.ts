@@ -13,13 +13,13 @@ export default class extends BaseSeeder {
 
       for (const p of produits) {
         await Produit.updateOrCreate(
-          { nom: p.nom, categoryId: categorie.id },
+          { nom: p.nom, categorieId: categorie.id },
           {
             nom: p.nom,
             prix: p.prix,
             image: p.image,
             disponible: true,
-            categoryId: categorie.id,
+            categorieId: categorie.id,
           }
         )
       }
