@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier le produit</title>
+</head>
+<body>
+  <h1>Modifier {{ produit.nom }}</h1>
+
+  <form method="POST" action="/admin/produits/{{ produit.id }}/modifier" enctype="multipart/form-data">
+    <label for="nom">Nom</label>
+    <input type="text" name="nom" id="nom" value="{{ produit.nom }}" required>
+
+    <label for="description">Description</label>
+    <textarea name="description" id="description">{{ produit.description }}</textarea>
+
+    <label for="prix">Prix</label>
+    <input type="number" step="0.01" name="prix" id="prix" value="{{ produit.prix }}" required>
+
+    <label for="categorieId">Catégorie</label>
+    <select name="categorieId" id="categorieId">
+      @each(categorie in categories)
+        <option value="{{ categorie.id }}" {{ categorie.id === produit.categorieId ? 'selected' : '' }}>
+          {{ categorie.nom }}
+        </option>
+      @end
+    </select>
+
+    @if(produit.image)
+      <p>Image actuelle :</p>
+      <img src="{{ produit.image }}" alt="{{ produit.nom }}" width="150">
+    @end
+
+    <label for="image">Remplacer l'image (facultatif)</label>
+    <input type="file" name="image" id="image" accept="image/*">
+
+    <label for="disponible">Disponible</label>
+    <input type="checkbox" name="disponible" id="disponible" {{ produit.disponible ? 'checked' : '' }}>
+
+    <button type="submit">Enregistrer</button>
+  </form>
+</body>
+</html>

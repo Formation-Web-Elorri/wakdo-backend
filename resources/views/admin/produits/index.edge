@@ -16,6 +16,7 @@
         <th>Catégorie</th>
         <th>Prix</th>
         <th>Disponible</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -25,6 +26,13 @@
           <td>{{ produit.categorie.nom }}</td>
           <td>{{ produit.prix }} €</td>
           <td>{{ produit.disponible ? 'Oui' : 'Non' }}</td>
+          <td>
+            <a href="/admin/produits/{{ produit.id }}/modifier">Modifier</a>
+
+            <form method="POST" action="/admin/produits/{{ produit.id }}/supprimer" style="display:inline;">
+              <button type="submit" onclick="return confirm('Supprimer ce produit ?')">Supprimer</button>
+            </form>
+          </td>
         </tr>
       @end
     </tbody>

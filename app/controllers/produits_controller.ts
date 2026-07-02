@@ -68,4 +68,46 @@ export default class ProduitsController {
 
     return response.redirect('/admin/produits')
   }
+
+  async edit({ params, view }: HttpContext) {
+    const produit = await Produit.findOrFail(params.id)
+    const categories = await Categorie.query().orderBy('nom')
+
+    return view.render('admin/produits/edit', { produit, categories })
+  }
+
+  async update({ params, request, response }: HttpContext) {
+    const produit = await Produit.findOrFail(params.id)
+
+    produit.nom = request.input('nom')
+    produit.description = request.input('description')
+    produit.prix = request.input('prix')
+    produit.categorieId = request.input('categorieId')
+    produit.disponible = request.input('disponible') === 'on'
+
+    const imageFile = request.file('image', {
+      size: '5mb',
+      extnames: ['jpg', 'jpeg', 'png', 'webp'],
+    })
+
+    if (imageFile) {
+      const nomFichier = `${cuid()}.${imageFile.extname}`
+      await imageFile.move(app.publicPath('uploads/produits'), {
+        name: nomFichier,
+      })
+      const baseUrl = `${request.protocol()}://${request.header('host')}`
+      produit.image = `${baseUrl}/uploads/produits/${nomFichier}`
+    }
+
+    await produit.save()
+
+    return response.redirect('/admin/produits')
+  }
+
+  async destroy({ params, response }: HttpContext) {
+    const produit = await Produit.findOrFail(params.id)
+    await produit.delete()
+
+    return response.redirect('/admin/produits')
+  }
 }

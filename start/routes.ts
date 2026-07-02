@@ -31,6 +31,18 @@ router
     router
       .post('/produits', [ProduitsController, 'store'])
       .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .get('/produits/:id/modifier', [ProduitsController, 'edit'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .post('/produits/:id/modifier', [ProduitsController, 'update'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .post('/produits/:id/supprimer', [ProduitsController, 'destroy'])
+      .use(middleware.role({ roles: ['administration'] }))
   })
   .prefix('/admin')
   .use(middleware.auth())
