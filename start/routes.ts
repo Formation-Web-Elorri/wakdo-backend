@@ -43,6 +43,26 @@ router
     router
       .post('/produits/:id/supprimer', [ProduitsController, 'destroy'])
       .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .get('/commandes', [CommandesController, 'adminIndex'])
+      .use(middleware.role({ roles: ['preparation', 'accueil', 'administration'] }))
+
+    router
+      .post('/commandes/:id/preparer', [CommandesController, 'marquerPreparee'])
+      .use(middleware.role({ roles: ['preparation', 'administration'] }))
+
+    router
+      .post('/commandes/:id/livrer', [CommandesController, 'marquerLivree'])
+      .use(middleware.role({ roles: ['accueil', 'administration'] }))
+
+    router
+      .get('/commandes/nouvelle', [CommandesController, 'nouvelle'])
+      .use(middleware.role({ roles: ['accueil', 'administration'] }))
+
+    router
+      .post('/commandes', [CommandesController, 'enregistrerManuelle'])
+      .use(middleware.role({ roles: ['accueil', 'administration'] }))
   })
   .prefix('/admin')
   .use(middleware.auth())

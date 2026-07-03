@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nouvelle commande</title>
+</head>
+<body>
+  <h1>Nouvelle commande</h1>
+
+  <form method="POST" action="/admin/commandes">
+    <label for="numeroCommande">Numéro de commande</label>
+    <input type="text" name="numeroCommande" id="numeroCommande" required>
+
+    <label for="numeroTable">Numéro de table (facultatif)</label>
+    <input type="text" name="numeroTable" id="numeroTable">
+
+    <label for="type">Type</label>
+    <select name="type" id="type">
+      <option value="sur_place">Sur place</option>
+      <option value="a_emporter">À emporter</option>
+    </select>
+
+    <h2>Menus</h2>
+    @each(produit in menus)
+      <fieldset>
+        <legend>{{ produit.nom }} ({{ produit.prix }} €)</legend>
+
+        <label><input type="radio" name="menu_{{ produit.id }}_taille" value="best-of" checked> Menu Best Of</label>
+        <label><input type="radio" name="menu_{{ produit.id }}_taille" value="maxi-best-of"> Menu Maxi Best Of (+1,50 €)</label>
+
+        <label for="menu_{{ produit.id }}_accompagnement">Accompagnement</label>
+        <select name="menu_{{ produit.id }}_accompagnement" id="menu_{{ produit.id }}_accompagnement">
+          <option value="frites">Frites</option>
+          <option value="potatoes">Potatoes (+0,50 €)</option>
+          <option value="salade">Salade</option>
+        </select>
+
+        <label for="menu_{{ produit.id }}_sauce">Sauce</label>
+        <select name="menu_{{ produit.id }}_sauce" id="menu_{{ produit.id }}_sauce">
+          <option value="barbecue">Classic Barbecue</option>
+          <option value="moutarde">Classic Moutarde</option>
+          <option value="creamy-deluxe">Creamy Deluxe</option>
+          <option value="ketchup">Ketchup</option>
+          <option value="chinoise">Chinoise</option>
+          <option value="curry">Curry</option>
+          <option value="pommes-frites">Pommes Frites</option>
+        </select>
+
+        <label for="menu_{{ produit.id }}_boisson">Boisson</label>
+        <select name="menu_{{ produit.id }}_boisson" id="menu_{{ produit.id }}_boisson">
+          @each(boisson in boissons)
+            <option value="{{ boisson.id }}">{{ boisson.nom }}</option>
+          @end
+        </select>
+
+        <label for="menu_{{ produit.id }}_quantite">Quantité</label>
+        <input type="number" min="0" name="menu_{{ produit.id }}_quantite" id="menu_{{ produit.id }}_quantite" value="0" style="width: 60px;">
+      </fieldset>
+    @end
+
+    <h2>Boissons seules</h2>
+    @each(produit in boissons)
+      <fieldset>
+        <legend>{{ produit.nom }} ({{ produit.prix }} €)</legend>
+
+        <label><input type="radio" name="boisson_{{ produit.id }}_taille" value="best-of" checked> 30 cl</label>
+        <label><input type="radio" name="boisson_{{ produit.id }}_taille" value="maxi"> 50 cl (+0,50 €)</label>
+
+        <label for="boisson_{{ produit.id }}_quantite">Quantité</label>
+        <input type="number" min="0" name="boisson_{{ produit.id }}_quantite" id="boisson_{{ produit.id }}_quantite" value="0" style="width: 60px;">
+      </fieldset>
+    @end
+
+    <h2>Autres produits</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Prix</th>
+          <th>Quantité</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(produit in autres)
+          <tr>
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.prix }} €</td>
+            <td>
+              <input type="number" min="0" name="quantite_{{ produit.id }}" value="0" style="width: 60px;">
+            </td>
+          </tr>
+        @end
+      </tbody>
+    </table>
+
+    <button type="submit">Enregistrer la commande</button>
+  </form>
+</body>
+</html>

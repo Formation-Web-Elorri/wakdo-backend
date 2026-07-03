@@ -13,7 +13,9 @@ export default class Produit extends BaseModel {
   @column()
   declare description: string | null
 
-  @column()
+  @column({
+    consume: (valeur: string) => Number(valeur),
+  })
   declare prix: number
 
   @column()

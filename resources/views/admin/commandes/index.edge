@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Commandes</title>
+</head>
+<body>
+  <h1>Commandes</h1>
+
+  @if(user.role === 'accueil' || user.role === 'administration')
+    <a href="/admin/commandes/nouvelle">Saisir une nouvelle commande</a>
+  @end
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Numéro</th>
+        <th>Table</th>
+        <th>Type</th>
+        <th>Statut</th>
+        <th>Total</th>
+        <th>Heure</th>
+        <th>Articles</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @each(commande in commandes)
+        <tr>
+          <td>{{ commande.numeroCommande }}</td>
+          <td>{{ commande.numeroTable ?? '-' }}</td>
+          <td>{{ commande.type }}</td>
+          <td>{{ commande.statut }}</td>
+          <td>{{ commande.total }} €</td>
+          <td>{{ commande.createdAt.toFormat('HH:mm') }}</td>
+          <td>
+            <ul>
+              @each(ligne in commande.lignes)
+                <li>
+                  {{ ligne.quantite }} x {{ ligne.nomProduit }}
+                  @if(ligne.options.length > 0)
+                    <ul>
+                      @each(option in ligne.options)
+                        <li>{{ option.libelle }}</li>
+                      @end
+                    </ul>
+                  @end
+                </li>
+              @end
+            </ul>
+          </td>
+          <td>
+            @if((user.role === 'preparation' || user.role === 'administration') && commande.statut === 'en_attente')
+              <form method="POST" action="/admin/commandes/{{ commande.id }}/preparer" style="display:inline;">
+                <button type="submit">Marquer préparée</button>
+              </form>
+            @end
+
+            @if((user.role === 'accueil' || user.role === 'administration') && commande.statut === 'preparee')
+              <form method="POST" action="/admin/commandes/{{ commande.id }}/livrer" style="display:inline;">
+                <button type="submit">Marquer livrée</button>
+              </form>
+            @end
+          </td>
+        </tr>
+      @end
+    </tbody>
+  </table>
+</body>
+</html>
