@@ -3,6 +3,7 @@ import { cuid } from '@adonisjs/core/helpers'
 import app from '@adonisjs/core/services/app'
 import Produit from '#models/produit'
 import Categorie from '#models/categorie'
+import { produitValidator } from '#validators/produit'
 
 export default class ProduitsController {
   async index({ request, response }: HttpContext) {
@@ -34,11 +35,16 @@ export default class ProduitsController {
     return view.render('admin/produits/create', { categories, user: auth.user })
   }
 
-  async store({ request, response }: HttpContext) {
-    const nom = request.input('nom')
-    const description = request.input('description')
-    const prix = request.input('prix')
-    const categorieId = request.input('categorieId')
+  async store({ request, response, session }: HttpContext) {
+    let donnees
+    try {
+      donnees = await request.validateUsing(produitValidator)
+    } catch (error) {
+      session.flashAll()
+      session.flash('erreursValidation', error.messages)
+      return response.redirect().back()
+    }
+
     const disponible = request.input('disponible') === 'on'
 
     const imageFile = request.file('image', {
@@ -58,10 +64,10 @@ export default class ProduitsController {
     }
 
     await Produit.create({
-      nom,
-      description,
-      prix,
-      categorieId,
+      nom: donnees.nom,
+      description: donnees.description ?? null,
+      prix: donnees.prix,
+      categorieId: donnees.categorieId,
       disponible,
       image: imagePath,
     })
@@ -76,13 +82,22 @@ export default class ProduitsController {
     return view.render('admin/produits/edit', { produit, categories, user: auth.user })
   }
 
-  async update({ params, request, response }: HttpContext) {
+  async update({ params, request, response, session }: HttpContext) {
     const produit = await Produit.findOrFail(params.id)
 
-    produit.nom = request.input('nom')
-    produit.description = request.input('description')
-    produit.prix = request.input('prix')
-    produit.categorieId = request.input('categorieId')
+    let donnees
+    try {
+      donnees = await request.validateUsing(produitValidator)
+    } catch (error) {
+      session.flashAll()
+      session.flash('erreursValidation', error.messages)
+      return response.redirect().back()
+    }
+
+    produit.nom = donnees.nom
+    produit.description = donnees.description ?? null
+    produit.prix = donnees.prix
+    produit.categorieId = donnees.categorieId
     produit.disponible = request.input('disponible') === 'on'
 
     const imageFile = request.file('image', {

@@ -32,6 +32,7 @@
             <a href="/admin/produits/{{ produit.id }}/modifier">Modifier</a>
 
             <form method="POST" action="/admin/produits/{{ produit.id }}/supprimer" style="display:inline;">
+              {{ csrfField() }}
               <button type="submit" onclick="return confirm('Supprimer ce produit ?')">Supprimer</button>
             </form>
           </td>

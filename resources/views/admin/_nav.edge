@@ -7,5 +7,6 @@
 @end
 
 <form method="POST" action="/logout" style="display:inline;">
+  {{ csrfField() }}
   <button type="submit">Se déconnecter</button>
 </form>

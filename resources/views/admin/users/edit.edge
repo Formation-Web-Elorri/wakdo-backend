@@ -6,22 +6,32 @@
 </head>
 <body>
   <h1>Modifier {{ utilisateur.fullName }}</h1>
+  @include('admin/_nav')
+
+  @if(flashMessages.has('erreursValidation'))
+    <ul style="color: red;">
+      @each(erreur in flashMessages.get('erreursValidation'))
+        <li>{{ erreur.message }}</li>
+      @end
+    </ul>
+  @end
 
   <form method="POST" action="/admin/utilisateurs/{{ utilisateur.id }}/modifier">
+    {{ csrfField() }}
     <label for="fullName">Nom complet</label>
-    <input type="text" name="fullName" id="fullName" value="{{ utilisateur.fullName }}" required>
+    <input type="text" name="fullName" id="fullName" value="{{ old('fullName', utilisateur.fullName) }}" required>
 
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" value="{{ utilisateur.email }}" required>
+    <input type="email" name="email" id="email" value="{{ old('email', utilisateur.email) }}" required>
 
     <label for="password">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
     <input type="password" name="password" id="password">
 
     <label for="role">Rôle</label>
     <select name="role" id="role">
-      <option value="administration" {{ utilisateur.role === 'administration' ? 'selected' : '' }}>Administration</option>
-      <option value="preparation" {{ utilisateur.role === 'preparation' ? 'selected' : '' }}>Préparation</option>
-      <option value="accueil" {{ utilisateur.role === 'accueil' ? 'selected' : '' }}>Accueil</option>
+      <option value="administration" {{ (old('role') ?? utilisateur.role) == 'administration' ? 'selected' : '' }}>Administration</option>
+      <option value="preparation" {{ (old('role') ?? utilisateur.role) == 'preparation' ? 'selected' : '' }}>Préparation</option>
+      <option value="accueil" {{ (old('role') ?? utilisateur.role) == 'accueil' ? 'selected' : '' }}>Accueil</option>
     </select>
 
     <button type="submit">Enregistrer</button>

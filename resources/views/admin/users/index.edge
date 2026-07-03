@@ -30,6 +30,7 @@
             <a href="/admin/utilisateurs/{{ utilisateur.id }}/modifier">Modifier</a>
 
             <form method="POST" action="/admin/utilisateurs/{{ utilisateur.id }}/supprimer" style="display:inline;">
+              {{ csrfField() }}
               <button type="submit" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
             </form>
           </td>

@@ -54,12 +54,14 @@
           <td>
             @if((user.role === 'preparation' || user.role === 'administration') && commande.statut === 'en_attente')
               <form method="POST" action="/admin/commandes/{{ commande.id }}/preparer" style="display:inline;">
+                  {{ csrfField() }}
                 <button type="submit">Marquer préparée</button>
               </form>
             @end
 
             @if((user.role === 'accueil' || user.role === 'administration') && commande.statut === 'preparee')
               <form method="POST" action="/admin/commandes/{{ commande.id }}/livrer" style="display:inline;">
+                {{ csrfField() }}
                 <button type="submit">Marquer livrée</button>
               </form>
             @end

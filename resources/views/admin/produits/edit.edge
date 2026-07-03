@@ -6,21 +6,31 @@
 </head>
 <body>
   <h1>Modifier {{ produit.nom }}</h1>
+  @include('admin/_nav')
+
+  @if(flashMessages.has('erreursValidation'))
+    <ul style="color: red;">
+      @each(erreur in flashMessages.get('erreursValidation'))
+        <li>{{ erreur.message }}</li>
+      @end
+    </ul>
+  @end
 
   <form method="POST" action="/admin/produits/{{ produit.id }}/modifier" enctype="multipart/form-data">
+    {{ csrfField() }}
     <label for="nom">Nom</label>
-    <input type="text" name="nom" id="nom" value="{{ produit.nom }}" required>
+    <input type="text" name="nom" id="nom" value="{{ old('nom', produit.nom) }}" required>
 
     <label for="description">Description</label>
-    <textarea name="description" id="description">{{ produit.description }}</textarea>
+    <textarea name="description" id="description">{{ old('description', produit.description) }}</textarea>
 
     <label for="prix">Prix</label>
-    <input type="number" step="0.01" name="prix" id="prix" value="{{ produit.prix }}" required>
+    <input type="number" step="0.01" name="prix" id="prix" value="{{ old('prix', produit.prix) }}" required>
 
     <label for="categorieId">Catégorie</label>
     <select name="categorieId" id="categorieId">
       @each(categorie in categories)
-        <option value="{{ categorie.id }}" {{ categorie.id === produit.categorieId ? 'selected' : '' }}>
+        <option value="{{ categorie.id }}" {{ (old('categorieId') ?? produit.categorieId) == categorie.id ? 'selected' : '' }}>
           {{ categorie.nom }}
         </option>
       @end

@@ -8,6 +8,7 @@
   <h1>Nouvelle commande</h1>
 
   <form method="POST" action="/admin/commandes">
+    {{ csrfField() }}
     <label for="numeroCommande">Numéro de commande</label>
     <input type="text" name="numeroCommande" id="numeroCommande" required>
 

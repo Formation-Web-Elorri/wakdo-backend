@@ -6,22 +6,32 @@
 </head>
 <body>
   <h1>Nouvel utilisateur</h1>
+  @include('admin/_nav')
+
+  @if(flashMessages.has('erreursValidation'))
+    <ul style="color: red;">
+      @each(erreur in flashMessages.get('erreursValidation'))
+        <li>{{ erreur.message }}</li>
+      @end
+    </ul>
+  @end
 
   <form method="POST" action="/admin/utilisateurs">
+    {{ csrfField() }}
     <label for="fullName">Nom complet</label>
-    <input type="text" name="fullName" id="fullName" required>
+    <input type="text" name="fullName" id="fullName" value="{{ old('fullName', '') }}" required>
 
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
+    <input type="email" name="email" id="email" value="{{ old('email', '') }}" required>
 
     <label for="password">Mot de passe</label>
     <input type="password" name="password" id="password" required>
 
     <label for="role">Rôle</label>
     <select name="role" id="role">
-      <option value="administration">Administration</option>
-      <option value="preparation">Préparation</option>
-      <option value="accueil">Accueil</option>
+      <option value="administration" {{ old('role') == 'administration' ? 'selected' : '' }}>Administration</option>
+      <option value="preparation" {{ old('role') == 'preparation' ? 'selected' : '' }}>Préparation</option>
+      <option value="accueil" {{ old('role') == 'accueil' ? 'selected' : '' }}>Accueil</option>
     </select>
 
     <button type="submit">Créer</button>

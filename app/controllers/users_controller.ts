@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
+import { creerUtilisateurValidator, modifierUtilisateurValidator } from '#validators/user'
 
 export default class UsersController {
   async index({ view, auth }: HttpContext) {
@@ -12,13 +13,26 @@ export default class UsersController {
     return view.render('admin/users/create', { user: auth.user })
   }
 
-  async store({ request, response }: HttpContext) {
-    const fullName = request.input('fullName')
-    const email = request.input('email')
-    const password = request.input('password')
-    const role = request.input('role')
+  async store({ request, response, session }: HttpContext) {
+    let donnees
+    try {
+      donnees = await request.validateUsing(creerUtilisateurValidator)
+    } catch (error) {
+      session.flashAll()
+      session.flash('erreursValidation', error.messages)
+      return response.redirect().back()
+    }
 
-    await User.create({ fullName, email, password, role })
+    const emailExistant = await User.findBy('email', donnees.email)
+    if (emailExistant) {
+      session.flashAll()
+      session.flash('erreursValidation', [
+        { message: 'Cet email est déjà utilisé par un autre compte.' },
+      ])
+      return response.redirect().back()
+    }
+
+    await User.create(donnees)
 
     return response.redirect('/admin/utilisateurs')
   }
@@ -29,16 +43,37 @@ export default class UsersController {
     return view.render('admin/users/edit', { utilisateur, user: auth.user })
   }
 
-  async update({ params, request, response }: HttpContext) {
+  async update({ params, request, response, session }: HttpContext) {
     const utilisateur = await User.findOrFail(params.id)
 
-    utilisateur.fullName = request.input('fullName')
-    utilisateur.email = request.input('email')
-    utilisateur.role = request.input('role')
+    let donnees
+    try {
+      donnees = await request.validateUsing(modifierUtilisateurValidator)
+    } catch (error) {
+      session.flashAll()
+      session.flash('erreursValidation', error.messages)
+      return response.redirect().back()
+    }
 
-    const nouveauMotDePasse = request.input('password')
-    if (nouveauMotDePasse) {
-      utilisateur.password = nouveauMotDePasse
+    const emailExistant = await User.query()
+      .where('email', donnees.email)
+      .whereNot('id', utilisateur.id)
+      .first()
+
+    if (emailExistant) {
+      session.flashAll()
+      session.flash('erreursValidation', [
+        { message: 'Cet email est déjà utilisé par un autre compte.' },
+      ])
+      return response.redirect().back()
+    }
+
+    utilisateur.fullName = donnees.fullName
+    utilisateur.email = donnees.email
+    utilisateur.role = donnees.role
+
+    if (donnees.password) {
+      utilisateur.password = donnees.password
     }
 
     await utilisateur.save()
