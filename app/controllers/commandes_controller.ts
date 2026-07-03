@@ -110,7 +110,7 @@ export default class CommandesController {
     return response.redirect('/admin/commandes')
   }
 
-  async nouvelle({ view }: HttpContext) {
+  async nouvelle({ view, auth }: HttpContext) {
     const produits = await Produit.query()
       .where('disponible', true)
       .preload('categorie')
@@ -122,7 +122,7 @@ export default class CommandesController {
       (p) => p.categorie.nom !== 'menus' && p.categorie.nom !== 'boissons'
     )
 
-    return view.render('admin/commandes/nouvelle', { menus, boissons, autres })
+    return view.render('admin/commandes/nouvelle', { menus, boissons, autres, user: auth.user })
   }
 
   async enregistrerManuelle({ request, response }: HttpContext) {

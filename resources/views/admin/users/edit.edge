@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier l'utilisateur</title>
+</head>
+<body>
+  <h1>Modifier {{ utilisateur.fullName }}</h1>
+
+  <form method="POST" action="/admin/utilisateurs/{{ utilisateur.id }}/modifier">
+    <label for="fullName">Nom complet</label>
+    <input type="text" name="fullName" id="fullName" value="{{ utilisateur.fullName }}" required>
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" value="{{ utilisateur.email }}" required>
+
+    <label for="password">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+    <input type="password" name="password" id="password">
+
+    <label for="role">Rôle</label>
+    <select name="role" id="role">
+      <option value="administration" {{ utilisateur.role === 'administration' ? 'selected' : '' }}>Administration</option>
+      <option value="preparation" {{ utilisateur.role === 'preparation' ? 'selected' : '' }}>Préparation</option>
+      <option value="accueil" {{ utilisateur.role === 'accueil' ? 'selected' : '' }}>Accueil</option>
+    </select>
+
+    <button type="submit">Enregistrer</button>
+  </form>
+</body>
+</html>

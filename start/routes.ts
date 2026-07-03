@@ -5,6 +5,7 @@ const ProduitsController = () => import('#controllers/produits_controller')
 const CategoriesController = () => import('#controllers/categories_controller')
 const CommandesController = () => import('#controllers/commandes_controller')
 const SessionController = () => import('#controllers/session_controller')
+const UsersController = () => import('#controllers/users_controller')
 
 // Routes API existantes, pour le front client
 router.get('/api/produits', [ProduitsController, 'index'])
@@ -63,6 +64,30 @@ router
     router
       .post('/commandes', [CommandesController, 'enregistrerManuelle'])
       .use(middleware.role({ roles: ['accueil', 'administration'] }))
+
+    router
+      .get('/utilisateurs', [UsersController, 'index'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .get('/utilisateurs/nouveau', [UsersController, 'create'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .post('/utilisateurs', [UsersController, 'store'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .get('/utilisateurs/:id/modifier', [UsersController, 'edit'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .post('/utilisateurs/:id/modifier', [UsersController, 'update'])
+      .use(middleware.role({ roles: ['administration'] }))
+
+    router
+      .post('/utilisateurs/:id/supprimer', [UsersController, 'destroy'])
+      .use(middleware.role({ roles: ['administration'] }))
   })
   .prefix('/admin')
   .use(middleware.auth())

@@ -22,16 +22,16 @@ export default class ProduitsController {
     return response.ok(produits)
   }
 
-  async adminIndex({ view }: HttpContext) {
+  async adminIndex({ view, auth }: HttpContext) {
     const produits = await Produit.query().preload('categorie').orderBy('nom')
 
-    return view.render('admin/produits/index', { produits })
+    return view.render('admin/produits/index', { produits, user: auth.user })
   }
 
-  async create({ view }: HttpContext) {
+  async create({ view, auth }: HttpContext) {
     const categories = await Categorie.query().orderBy('nom')
 
-    return view.render('admin/produits/create', { categories })
+    return view.render('admin/produits/create', { categories, user: auth.user })
   }
 
   async store({ request, response }: HttpContext) {
@@ -69,11 +69,11 @@ export default class ProduitsController {
     return response.redirect('/admin/produits')
   }
 
-  async edit({ params, view }: HttpContext) {
+  async edit({ params, view, auth }: HttpContext) {
     const produit = await Produit.findOrFail(params.id)
     const categories = await Categorie.query().orderBy('nom')
 
-    return view.render('admin/produits/edit', { produit, categories })
+    return view.render('admin/produits/edit', { produit, categories, user: auth.user })
   }
 
   async update({ params, request, response }: HttpContext) {

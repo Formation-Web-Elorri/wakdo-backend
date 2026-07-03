@@ -1,0 +1,11 @@
+@if(user.role === 'administration')
+  <nav>
+    <a href="/admin/produits">Produits</a> |
+    <a href="/admin/utilisateurs">Utilisateurs</a> |
+    <a href="/admin/commandes">Commandes</a>
+  </nav>
+@end
+
+<form method="POST" action="/logout" style="display:inline;">
+  <button type="submit">Se déconnecter</button>
+</form>

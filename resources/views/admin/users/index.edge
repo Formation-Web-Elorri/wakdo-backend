@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Utilisateurs</title>
+</head>
+<body>
+  <h1>Utilisateurs</h1>
+   @include('admin/_nav')
+
+
+  <a href="/admin/utilisateurs/nouveau">Ajouter un utilisateur</a>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Rôle</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @each(utilisateur in users)
+        <tr>
+          <td>{{ utilisateur.fullName }}</td>
+          <td>{{ utilisateur.email }}</td>
+          <td>{{ utilisateur.role }}</td>
+          <td>
+            <a href="/admin/utilisateurs/{{ utilisateur.id }}/modifier">Modifier</a>
+
+            <form method="POST" action="/admin/utilisateurs/{{ utilisateur.id }}/supprimer" style="display:inline;">
+              <button type="submit" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      @end
+    </tbody>
+  </table>
+</body>
+</html>

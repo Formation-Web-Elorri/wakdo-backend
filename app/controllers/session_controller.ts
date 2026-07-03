@@ -12,7 +12,7 @@ export default class SessionController {
     try {
       const user = await User.verifyCredentials(email, password)
       await auth.use('web').login(user)
-      return response.redirect('/admin/produits')
+      return response.redirect('/admin/commandes')
     } catch {
       session.flash('erreur', 'Email ou mot de passe incorrect')
       return response.redirect('/login')

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nouvel utilisateur</title>
+</head>
+<body>
+  <h1>Nouvel utilisateur</h1>
+
+  <form method="POST" action="/admin/utilisateurs">
+    <label for="fullName">Nom complet</label>
+    <input type="text" name="fullName" id="fullName" required>
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="password">Mot de passe</label>
+    <input type="password" name="password" id="password" required>
+
+    <label for="role">Rôle</label>
+    <select name="role" id="role">
+      <option value="administration">Administration</option>
+      <option value="preparation">Préparation</option>
+      <option value="accueil">Accueil</option>
+    </select>
+
+    <button type="submit">Créer</button>
+  </form>
+</body>
+</html>
