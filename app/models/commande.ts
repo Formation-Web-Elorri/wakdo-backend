@@ -2,6 +2,9 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import LigneCommande from '#models/ligne_commande'
+import { belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
 
 export default class Commande extends BaseModel {
   @column({ isPrimary: true })
@@ -22,6 +25,9 @@ export default class Commande extends BaseModel {
   @column()
   declare total: number
 
+  @column()
+  declare userId: number | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -30,4 +36,7 @@ export default class Commande extends BaseModel {
 
   @hasMany(() => LigneCommande)
   declare lignes: HasMany<typeof LigneCommande>
+
+  @belongsTo(() => User)
+  declare utilisateur: BelongsTo<typeof User>
 }

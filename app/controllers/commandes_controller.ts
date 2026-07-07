@@ -89,6 +89,7 @@ export default class CommandesController {
   async adminIndex({ view, auth }: HttpContext) {
     const commandes = await Commande.query()
       .preload('lignes', (q) => q.preload('options'))
+      .preload('utilisateur')
       .orderBy('createdAt', 'asc')
 
     return view.render('admin/commandes/index', { commandes, user: auth.user })
@@ -125,7 +126,7 @@ export default class CommandesController {
     return view.render('admin/commandes/nouvelle', { menus, boissons, autres, user: auth.user })
   }
 
-  async enregistrerManuelle({ request, response }: HttpContext) {
+  async enregistrerManuelle({ request, response, auth }: HttpContext) {
     const numeroCommande = request.input('numeroCommande')
     const numeroTable = request.input('numeroTable')
     const type = request.input('type')
@@ -147,6 +148,7 @@ export default class CommandesController {
           type,
           statut: 'en_attente',
           total: 0,
+          userId: auth.user!.id,
         },
         { client: trx }
       )

@@ -6,8 +6,7 @@
 </head>
 <body>
   <h1>Commandes</h1>
-
-   @include('admin/_nav')
+  @include('admin/_nav')
 
   @if(user.role === 'accueil' || user.role === 'administration')
     <a href="/admin/commandes/nouvelle">Saisir une nouvelle commande</a>
@@ -23,6 +22,7 @@
         <th>Total</th>
         <th>Heure</th>
         <th>Articles</th>
+        <th>Saisie par</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -51,10 +51,11 @@
               @end
             </ul>
           </td>
+          <td>{{ commande.utilisateur ? commande.utilisateur.fullName : 'Borne client' }}</td>
           <td>
             @if((user.role === 'preparation' || user.role === 'administration') && commande.statut === 'en_attente')
               <form method="POST" action="/admin/commandes/{{ commande.id }}/preparer" style="display:inline;">
-                  {{ csrfField() }}
+                {{ csrfField() }}
                 <button type="submit">Marquer préparée</button>
               </form>
             @end
