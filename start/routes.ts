@@ -6,12 +6,14 @@ const CategoriesController = () => import('#controllers/categories_controller')
 const CommandesController = () => import('#controllers/commandes_controller')
 const SessionController = () => import('#controllers/session_controller')
 const UsersController = () => import('#controllers/users_controller')
+const ConfidentialiteController = () => import('#controllers/confidentialite_controller')
 
 // Routes API existantes, pour le front client
 router.get('/api/produits', [ProduitsController, 'index'])
 router.get('/api/categories', [CategoriesController, 'index'])
 router.post('/api/commandes', [CommandesController, 'store'])
 router.get('/api/commandes', [CommandesController, 'index'])
+router.get('/confidentialite', [ConfidentialiteController, 'index'])
 
 // Authentification
 router.get('/login', [SessionController, 'showLogin'])
