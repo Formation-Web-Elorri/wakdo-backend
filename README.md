@@ -1,11 +1,21 @@
 # Wakdo — Back-end (Bloc 2 : Développement Back-end)
-
+ 
 Back-office et API du projet Wakdo (borne de commande de restauration rapide), réalisé dans le cadre de la certification RNCP 37805 - Développeur Web.
-
+ 
 Ce dépôt correspond au **Bloc 2** : il gère les données de l'application, les commandes, et l'authentification/autorisation des utilisateurs internes (administration, préparation, accueil). Il communique avec le front-end du **Bloc 1** via une API REST.
-
+ 
 ---
-
+ 
+## Accès à l'interface d'administration
+ 
+Pour se connecter au back-office (`/login`) :
+ 
+- **Email** : `admin@wakdo.fr`
+- **Mot de passe** : `123`
+Ce mot de passe volontairement simple est un choix assumé, propre au contexte de cet examen. Il ne s'agit évidemment pas d'une pratique à suivre dans une vraie application mise en production, où un mot de passe fort, unique et généré serait obligatoire. Ici, l'objectif était de faciliter l'accès pour le jury lors de la correction, et de gagner du temps pendant les mois de développement du projet, sans ajouter une contrainte inutile sur un compte de test. Dans un contexte réel, ce compte serait supprimé ou son mot de passe changé dès le premier déploiement (voir la section 9, Peuplement des données).
+ 
+---
+ 
 ## 1. Objectif du projet
 
 D'après le cahier des charges (kit d'examen Bloc 2) :
